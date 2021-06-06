@@ -69,7 +69,6 @@ def close_connection(ctx):
 
 @app.route('/')
 def home():
-    # css = render_template('css/product.css')
     return render_template('index.html')
 
 
