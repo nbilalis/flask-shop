@@ -6,6 +6,64 @@ from flask import Flask, g, render_template
 app = Flask(__name__)
 
 
+DATABASE_PATH = Path(__file__).parent / 'data/flask_shop.db'
+
+
+def get_conn():
+    if 'conn' not in g:     # hasattr(g, 'conn')
+        app.logger.debug(f"» New Connection requested from endpoint '{request.endpoint}'")
+        conn = sqlite3.connect(DATABASE_PATH)
+        conn.row_factory = sqlite3.Row
+        g.conn = conn       # setattr(g, 'conn', conn)
+
+    return g.conn
+
+
+@app.before_request
+def load_categories():
+    '''
+    Load categories, needed by menu
+    '''
+
+    # Quick return if request comes from static asset
+    if not request or request.endpoint == 'static':
+        return
+
+    if not hasattr(g, 'categories'):
+        cur = get_conn().cursor()
+        categories = cur.execute(
+            '''
+            SELECT [id], [title], [parent], [other]
+            FROM [product_category]
+            '''
+        ).fetchall()
+
+        setattr(g, 'categories', categories)
+
+
+@app.teardown_request
+def teardown_request(ctx):
+    '''
+    Close connection on request teardown
+    '''
+    if hasattr(g, 'conn'):
+        app.logger.debug('» Teardown Request')
+        app.logger.debug('» Connection closed')
+        g.conn.close()
+
+
+@app.teardown_appcontext
+def close_connection(ctx):
+    '''
+    Close connection on appcontext teardown
+    This will fire whether there was an exception or not
+    '''
+    if conn := g.pop('conn', None):
+        app.logger.debug('» Teardown AppContext')
+        app.logger.debug('» Connection closed')
+        conn.close()
+
+
 @app.route('/')
 def home():
     # css = render_template('css/product.css')
