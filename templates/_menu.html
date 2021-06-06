@@ -1,60 +1,64 @@
 <!-- menu -->
 <section id="menu">
 <div class="container">
-	<div class="menu-area">
-	<!-- Navbar -->
-	<div class="navbar navbar-default" role="navigation">
-		<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			<span class="sr-only">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		</div>
-		<div class="navbar-collapse collapse">
-		<!-- Left nav -->
-		<ul class="nav navbar-nav">
-			<li><a href="{{ url_for('home') }}">Home</a></li>
+    <div class="menu-area">
+    <!-- Navbar -->
+    <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        </div>
+        <div class="navbar-collapse collapse">
+        <!-- Left nav -->
+        <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
 
-			{%- macro render_menu_for_category(category) -%}
-			<li>
-				<a href="{{ url_for('product_list', category_id=category.id) }}">
-					{{- category.title -}} {%- if category.children -%}<span class="caret"></span>{%- endif -%}
-				</a>
-				{%- if category.children -%}
-					<ul class="dropdown-menu">
-						{% for child in category.children -%}
-							{{ render_menu_for_category(child) }}
-						{%- endfor %}
-					</ul>
-				{%- endif -%}
-			</li>
-			{%- endmacro -%}
+            {%- for parent in ['Men', 'Women', 'Kids', 'Digital'] -%}
+            <li>
+                <a href="javascript:;">{{- parent -}} <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                {%- for c in g.categories -%}
+                    {%- if c['parent'] == parent and not c['other']  -%}
+                        <li><a href="{{ url_for('product_list', category_id=c['id']) }}">{{ c['title'] }}</a></li>
+                    {%- endif -%}
+                {%- endfor -%}
+                    <li>
+                        <a href="javascript:;">Other <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                        {%- for c in g.categories -%}
+                            {%- if c['parent'] == parent and c['other']  -%}
+                                <li><a href="{{ url_for('product_list', category_id=c['id']) }}">{{ c['title'] }}</a></li>
+                            {%- endif -%}
+                        {%- endfor -%}
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            {%- endfor -%}
 
-			{%- for first_level_category in g.categories -%}
-				{{- render_menu_for_category(first_level_category) -}}
-			{%- endfor -%}
-
-			<li><a href="blog-archive.html">Blog <span class="caret"></span></a>
-			<ul class="dropdown-menu">
-				<li><a href="blog-archive.html">Blog Style 1</a></li>
-				<li><a href="blog-archive-2.html">Blog Style 2</a></li>
-				<li><a href="blog-single.html">Blog Single</a></li>
-			</ul>
-			</li>
-			<li><a href="contact.html">Contact</a></li>
-			<li><a href="#">Pages <span class="caret"></span></a>
-			<ul class="dropdown-menu">
-				<li><a href="product.html">Shop Page</a></li>
-				<li><a href="product-detail.html">Shop Single</a></li>
-				<li><a href="404.html">404 Page</a></li>
-			</ul>
-			</li>
-		</ul>
-		</div><!--/.nav-collapse -->
-	</div>
-	</div>
+            <li><a href="blog-archive.html">Blog <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="blog-archive.html">Blog Style 1</a></li>
+                <li><a href="blog-archive-2.html">Blog Style 2</a></li>
+                <li><a href="blog-single.html">Blog Single</a></li>
+            </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Pages <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="product.html">Shop Page</a></li>
+                <li><a href="product-detail.html">Shop Single</a></li>
+                <li><a href="404.html">404 Page</a></li>
+            </ul>
+            </li>
+        </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    </div>
 </div>
 </section>
 <!-- / menu -->
