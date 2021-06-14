@@ -15,3 +15,20 @@ jobs:
         username: saeprojects
         password: ${{ secrets.ftp_password }}
         server-dir: ./flask-shop/
+        exclude: .git/**
+          - .git
+          - .github/**
+          - .github
+          - .vscode/**
+          - .vscode
+          - _assets/**
+          - _assets
+          - _migrations/**
+          - _migrations
+          - .editorconfig
+          - .flake8
+          - .flaskenv
+          - .gitignore
+          - LICENSE
+          - README.md
+
