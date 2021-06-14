@@ -52,7 +52,7 @@ def close_connection(error):
     Close connection on appcontext teardown
     This will fire whether there was an exception or not
     '''
-    if conn := g.pop('conn', None):
+    if (conn := g.pop('conn', None)) is not None:
         app.logger.debug('» Teardown AppContext')
         app.logger.debug('» Connection closed')
         conn.close()
