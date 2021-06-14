@@ -15,7 +15,7 @@ DATABASE_PATH = path.join(
 
 
 def get_conn():
-    if 'conn' not in g:     # hasattr(g, 'conn')
+    if 'conn' not in g:     # not hasattr(g, 'conn')
         app.logger.debug(f"» New Connection requested from endpoint '{request.endpoint}'")
         conn = sqlite3.connect(DATABASE_PATH)
         conn.row_factory = sqlite3.Row
@@ -58,7 +58,7 @@ def teardown_request(ctx):
 
 
 @app.teardown_appcontext
-def close_connection(ctx):
+def close_connection(error):
     '''
     Close connection on appcontext teardown
     This will fire whether there was an exception or not
@@ -212,4 +212,4 @@ def insert_test_products(category):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=int(environ.get('SERVER_PORT', 5000)))
+    app.run(host='127.0.0.1', port=int(environ.get('SERVER_PORT', 8081)))
