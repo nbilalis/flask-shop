@@ -1,7 +1,6 @@
-from os import environ
+from os import environ, path
 from random import randint, choice
 from inspect import cleandoc
-from pathlib import Path
 from flask import Flask, g, request, render_template, abort
 import sqlite3
 
@@ -9,7 +8,10 @@ app = Flask(__name__)
 
 app.secret_key = environ.get('SECRET_KEY', '1234')
 
-DATABASE_PATH = Path(__file__).parent / 'data/flask_shop.db'
+DATABASE_PATH = path.join(
+    path.dirname(path.abspath(__file__)),
+    'data/flask_shop.db'
+)
 
 
 def get_conn():
