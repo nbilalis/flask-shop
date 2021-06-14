@@ -7,11 +7,11 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
-    
+
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ftp.sae-projects.eu
         username: saeprojects
         password: ${{ secrets.ftp_password }}
-        local-dir: /flask-shop
+        server-dir: ./flask-shop/
