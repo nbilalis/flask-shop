@@ -46,17 +46,6 @@ def load_categories():
         setattr(g, 'categories', categories)
 
 
-@app.teardown_request
-def teardown_request(ctx):
-    '''
-    Close connection on request teardown
-    '''
-    if hasattr(g, 'conn'):
-        app.logger.debug('» Teardown Request')
-        app.logger.debug('» Connection closed')
-        g.conn.close()
-
-
 @app.teardown_appcontext
 def close_connection(error):
     '''
