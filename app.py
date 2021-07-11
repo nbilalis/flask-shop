@@ -2,11 +2,15 @@ from os import environ, path
 from random import randint, choice
 from inspect import cleandoc
 from flask import Flask, g, request, render_template, abort
+
 import sqlite3
+
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 
 app.secret_key = environ.get('SECRET_KEY', '1234')
+toolbar = DebugToolbarExtension(app)
 
 DATABASE_PATH = path.join(
     path.dirname(path.abspath(__file__)),
