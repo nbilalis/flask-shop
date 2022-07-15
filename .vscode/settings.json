@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": ".venv\\Scripts\\python.exe",
+    "python.defaultInterpreterPath": ".venv\\Scripts\\python.exe",
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
     "python.formatting.provider": "autopep8",
@@ -13,4 +13,8 @@
     "emmet.includeLanguages": {
         "jinja-html": "html"
     },
+
+    "[python]": {
+        "editor.formatOnSave": true
+    }
 }
